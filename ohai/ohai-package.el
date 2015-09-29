@@ -33,10 +33,26 @@
     t))
 
 ;; Emacs comes with a package manager for installing more features.
-;; The default package repository doesn't contain much, so we tell it
-;; to use MELPA as well.
 (setq package-user-dir (concat dotfiles-dir "elpa"))
 (require 'package)
+
+;; Fix up each existing package repository (there is usually just one)
+;; to use https.
+(defun http-to-https (str)
+  (if (equal "http:" (substring (downcase str) 0 5))
+      (concat "https:" (substring str 6))
+    str))
+
+(setq package-archives
+      (let (lst)
+        (dolist (elt package-archives)
+          (setq lst (cons
+                     (cons (car elt) (http-to-https (cdr elt)))
+                     lst)))
+        (reverse lst)))
+
+;; The default package repository doesn't contain much, so we tell it
+;; to use MELPA as well.
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 
 ;; To get the package manager going, we invoke its initialise function.
