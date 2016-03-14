@@ -47,8 +47,6 @@
 (setq mode-require-final-newline nil)
 (setq require-final-newline nil)
 
-;; Set default indentation for various languages (add your own!)
-(setq-default tab-width 4)
 ;; Javascript
 (setq-default js2-basic-offset 2)
 ;; JSON
